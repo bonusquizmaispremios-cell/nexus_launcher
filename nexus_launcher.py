@@ -1006,53 +1006,9 @@ elif st.session_state.etapa == "Formulario":
             st.markdown('</div>', unsafe_allow_html=True)
 
     st.divider()
-    st.markdown("#### Ou deixe a IA preencher pelo nicho")
-    nicho_rapido = st.text_input("Digite só o assunto do seu ebook:", placeholder="ex: meditação, finanças pessoais, culinária saudável", key="nx70")
-    if st.button("✨ PREENCHER COM IA", key="nx69"):
-        if nicho_rapido.strip():
-            with st.spinner("IA preenchendo o formulário..."):
-                import json as _json_nx
-                _prompt_nx = f"""Você é especialista em marketing digital. Crie dados para um ebook sobre: {nicho_rapido}
-
-Responda APENAS com este JSON, sem texto antes ou depois:
-{{
-  "nicho": "nome do nicho em 2-4 palavras",
-  "publico": "descrição do público-alvo em 1 frase",
-  "nome_eb": "título atrativo do ebook",
-  "dor": "principal problema que o ebook resolve em 1 frase",
-  "atual": "situação atual do público antes do ebook em 1-2 frases",
-  "desejada": "situação desejada após o ebook em 1-2 frases",
-  "promessa": "promessa de transformação em 1 frase curta",
-  "diferencial": "diferencial do ebook em 1 frase"
-}}"""
-                _raw = chamar_ia(_prompt_nx, "Responda APENAS com JSON válido. Sem texto extra.")
-                # Extrair JSON da resposta
-                _dados_ia = {}
-                try:
-                    # Tentar parse direto
-                    _s = _raw.find('{')
-                    _e = _raw.rfind('}')
-                    if _s >= 0 and _e > _s:
-                        _dados_ia = _json_nx.loads(_raw[_s:_e+1])
-                except:
-                    pass
-
-                if _dados_ia:
-                    _campos_validos = {k: str(v) for k, v in _dados_ia.items()
-                                      if k in ['nicho','publico','nome_eb','dor','atual','desejada','promessa','diferencial'] and v}
-                    st.session_state.dados.update(_campos_validos)
-                    # Deletar keys dos widgets para forçar value= no próximo render
-                    for _k_del in ['nx68','nx67','nx66','nx65','nx64','nx63','nx62','nx61']:
-                        if _k_del in st.session_state:
-                            del st.session_state[_k_del]
-                    st.rerun()
-                else:
-                    st.error("⚠️ Erro ao processar resposta da IA. Tente novamente.")
-        else:
-            st.warning("Digite o assunto do ebook antes de continuar.")
 
     st.divider()
-    st.markdown("#### Revise ou preencha manualmente")
+    st.markdown("#### Preencha os dados do seu lançamento")
     d['nicho']       = st.text_input("Nicho:", value=d.get('nicho',''), help="ex: emagrecimento, renda extra", key="nx68")
     d['publico']     = st.text_input("Público-alvo:", value=d.get('publico',''), key="nx67")
     d['nome_eb']     = st.text_input("Nome do e-book:", value=d.get('nome_eb',''), key="nx66")
