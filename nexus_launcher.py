@@ -513,7 +513,7 @@ def barra_navegacao():
     mostrar_progresso()
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("➕ INICIAR NOVO PROJETO"):
+        if st.button("➕ INICIAR NOVO PROJETO", key="nx76"):
             st.session_state.dados = {}; st.session_state.chat_hist = []; st.session_state.etapa = "Formulario"; st.rerun()
     with col2:
         with st.expander("📂 MEUS PROJETOS"):
@@ -863,8 +863,8 @@ if st.session_state.etapa == "Login":
     st.title("NEXUS LAUNCHER")
     st.subheader("ACESSO RESTRITO A ASSOCIADOS DO QUIZ COM PRÊMIOS")
     st.markdown('<p style="margin-top:-8px;margin-bottom:20px;font-size:0.95em;">🔗 <a href="https://quizcompremios.com.br" target="_blank" style="color:#0369A1;text-decoration:none;font-weight:600;">quizcompremios.com.br</a></p>', unsafe_allow_html=True)
-    st.session_state.usuario = st.text_input("Nome")
-    st.session_state.api_key = st.text_input("Chave Groq", type="password")
+    st.session_state.usuario = st.text_input("Nome", key="nx75")
+    st.session_state.api_key = st.text_input("Chave Groq", type="password", key="nx74")
     with st.expander("🚀 Primeira vez aqui? Veja como funciona em 3 passos"):
         st.markdown("""
 <div style="display:flex;gap:16px;flex-wrap:wrap;">
@@ -923,7 +923,7 @@ if st.session_state.etapa == "Login":
             ⚪ <strong>Groq API:</strong> aguardando chave
             </div>""", unsafe_allow_html=True)
 
-    if st.button("ENTRAR"):
+    if st.button("ENTRAR", key="nx73"):
         if not st.session_state.usuario.strip(): st.error("Informe seu nome.")
         elif not st.session_state.api_key.strip(): st.error("Informe sua chave de API.")
         else: st.session_state.etapa = "Escolha_Tipo"; st.rerun()
@@ -949,7 +949,7 @@ elif st.session_state.etapa == "Escolha_Tipo":
         <div style="font-family:Rajdhani,sans-serif;font-size:1.4em;font-weight:700;color:#1E3A5F;margin:10px 0 8px;">Lançamento de E-book</div>
         <div style="font-size:0.88em;color:#64748B;line-height:1.5;">Programa gratuito de 15 dias → aquecimento → venda do e-book no grupo do WhatsApp</div>
         </div>""", unsafe_allow_html=True)
-        if st.button("📚 LANÇAR E-BOOK", use_container_width=True):
+        if st.button("📚 LANÇAR E-BOOK", use_container_width=True, key="nx72"):
             st.session_state.dados['tipo_lancamento'] = 'ebook'
             st.session_state.etapa = "Formulario"; st.rerun()
     with col2:
@@ -958,7 +958,7 @@ elif st.session_state.etapa == "Escolha_Tipo":
         <div style="font-family:Rajdhani,sans-serif;font-size:1.4em;font-weight:700;color:#4A1D7A;margin:10px 0 8px;">Lançamento de Videoaulas</div>
         <div style="font-size:0.88em;color:#64748B;line-height:1.5;">Método CPL: pré-lançamento com 3 vídeos estratégicos → abertura de carrinho → fechamento com urgência</div>
         </div>""", unsafe_allow_html=True)
-        if st.button("🎬 LANÇAR VIDEOAULAS", use_container_width=True):
+        if st.button("🎬 LANÇAR VIDEOAULAS", use_container_width=True, key="nx71"):
             st.session_state.dados['tipo_lancamento'] = 'video'
             st.session_state.etapa = "Video_Formulario"; st.rerun()
 
@@ -981,8 +981,8 @@ elif st.session_state.etapa == "Formulario":
 
     st.divider()
     st.markdown("#### Ou deixe a IA preencher pelo nicho")
-    nicho_rapido = st.text_input("Digite só o assunto do seu ebook:", placeholder="ex: meditação, finanças pessoais, culinária saudável")
-    if st.button("✨ PREENCHER COM IA"):
+    nicho_rapido = st.text_input("Digite só o assunto do seu ebook:", placeholder="ex: meditação, finanças pessoais, culinária saudável", key="nx70")
+    if st.button("✨ PREENCHER COM IA", key="nx69"):
         if nicho_rapido.strip():
             with st.spinner("IA preenchendo o formulário..."):
                 resultado_ia = chamar_ia(
@@ -1004,21 +1004,21 @@ elif st.session_state.etapa == "Formulario":
 
     st.divider()
     st.markdown("#### Revise ou preencha manualmente")
-    d['nicho']       = st.text_input("Nicho:", value=d.get('nicho',''), help="ex: emagrecimento, renda extra")
-    d['publico']     = st.text_input("Público-alvo:", value=d.get('publico',''))
-    d['nome_eb']     = st.text_input("Nome do e-book:", value=d.get('nome_eb',''))
-    d['dor']         = st.text_input("Principal dor que resolve:", value=d.get('dor',''))
-    d['atual']       = st.text_area("Situação atual da pessoa:", value=d.get('atual',''))
-    d['desejada']    = st.text_area("Situação desejada:", value=d.get('desejada',''))
-    d['promessa']    = st.text_input("Transformação do programa:", value=d.get('promessa',''))
-    d['diferencial'] = st.text_input("Diferencial:", value=d.get('diferencial',''))
-    d['preco']       = st.number_input("Preço do e-book (R$):", min_value=9, max_value=997, value=int(d.get('preco',47)), step=1)
+    d['nicho']       = st.text_input("Nicho:", value=d.get('nicho',''), help="ex: emagrecimento, renda extra", key="nx68")
+    d['publico']     = st.text_input("Público-alvo:", value=d.get('publico',''), key="nx67")
+    d['nome_eb']     = st.text_input("Nome do e-book:", value=d.get('nome_eb',''), key="nx66")
+    d['dor']         = st.text_input("Principal dor que resolve:", value=d.get('dor',''), key="nx65")
+    d['atual']       = st.text_area("Situação atual da pessoa:", value=d.get('atual',''), key="nx64")
+    d['desejada']    = st.text_area("Situação desejada:", value=d.get('desejada',''), key="nx63")
+    d['promessa']    = st.text_input("Transformação do programa:", value=d.get('promessa',''), key="nx62")
+    d['diferencial'] = st.text_input("Diferencial:", value=d.get('diferencial',''), key="nx61")
+    d['preco']       = st.number_input("Preço do e-book (R$):", min_value=9, max_value=997, value=int(d.get('preco',47)), step=1, key="nx60")
 
     st.divider()
     st.markdown("#### Suas credenciais como autor")
-    d['autor_nome']        = st.text_input("Seu nome:", value=d.get('autor_nome',''))
-    d['autor_experiencia'] = st.text_area("Sua experiência com o tema:", value=d.get('autor_experiencia',''))
-    d['autor_credenciais'] = st.text_area("Resultados ou conquistas:", value=d.get('autor_credenciais',''))
+    d['autor_nome']        = st.text_input("Seu nome:", value=d.get('autor_nome',''), key="nx59")
+    d['autor_experiencia'] = st.text_area("Sua experiência com o tema:", value=d.get('autor_experiencia',''), key="nx58")
+    d['autor_credenciais'] = st.text_area("Resultados ou conquistas:", value=d.get('autor_credenciais',''), key="nx57")
 
     st.divider()
     st.markdown("#### WhatsApp para receber respostas da enquete")
@@ -1027,17 +1027,17 @@ elif st.session_state.etapa == "Formulario":
     O grupo ficará fechado para mensagens — os membros não conseguem responder lá dentro.<br>
     Por isso, as respostas da enquete e dúvidas devem ir para um número pessoal ou comercial separado.
     </div>""", unsafe_allow_html=True)
-    d['whatsapp_contato'] = st.text_input("Número para receber respostas:", value=d.get('whatsapp_contato',''), placeholder="ex: (11) 99999-9999")
+    d['whatsapp_contato'] = st.text_input("Número para receber respostas:", value=d.get('whatsapp_contato',''), placeholder="ex: (11) 99999-9999", key="nx56")
 
     data_sugerida = d.get('data_lancto', date.today() + timedelta(days=15))
-    d['data_lancto'] = st.date_input("Data de lançamento", value=data_sugerida, min_value=date.today())
+    d['data_lancto'] = st.date_input("Data de lançamento", value=data_sugerida, min_value=date.today(), key="nx55")
     st.caption("💡 Dica: Use os primeiros 7 dias para encher o grupo e os próximos 7 para aquecer. Lance no 15º dia.")
 
     st.divider()
     st.markdown("#### Calculadora de faturamento")
     col_a, col_b, col_c = st.columns(3)
-    with col_a: leads = st.number_input("Pessoas no grupo:", min_value=100, max_value=100000, value=1000, step=100)
-    with col_b: conversao = st.slider("Taxa de conversão (%):", min_value=1, max_value=30, value=10)
+    with col_a: leads = st.number_input("Pessoas no grupo:", min_value=100, max_value=100000, value=1000, step=100, key="nx54")
+    with col_b: conversao = st.slider("Taxa de conversão (%):", min_value=1, max_value=30, value=10, key="nx53")
     with col_c: st.metric("Preço definido", f"R${d.get('preco',47)}")
     vendas = int(leads * conversao / 100)
     faturamento = vendas * d.get('preco', 47)
@@ -1062,7 +1062,7 @@ elif st.session_state.etapa == "Formulario":
         🚀 <strong>Lançamento:</strong> {d['data_lancto'].strftime('%d/%m/%Y')}
         </div>""", unsafe_allow_html=True)
 
-    if st.button("AVANÇAR →"):
+    if st.button("AVANÇAR →", key="nx52"):
         faltando = [c for c in campos_obrigatorios if not d.get(c,'').strip()]
         if faltando: st.warning("Preencha todos os campos antes de avançar.")
         else: st.session_state.etapa = "Potencial_Nicho"; st.rerun()
@@ -1073,7 +1073,7 @@ elif st.session_state.etapa == "Potencial_Nicho":
     st.title("📊 POTENCIAL DO NICHO")
     d = st.session_state.dados
 
-    if st.button("🔍 ANALISAR POTENCIAL DO NICHO"):
+    if st.button("🔍 ANALISAR POTENCIAL DO NICHO", key="nx51"):
         with st.spinner("Analisando potencial de mercado..."):
             prompt_pot = (
                 f"Analise o potencial de mercado para lançamento digital no nicho: {d.get('nicho')}.\n"
@@ -1150,25 +1150,25 @@ elif st.session_state.etapa == "Potencial_Nicho":
             st.markdown(f"**👥 Público estimado:** {pub_est}")
 
         st.divider()
-        if st.button("AVANÇAR → GERAR E-BOOK"): st.session_state.etapa = "Gerar_Ebook"; st.rerun()
+        if st.button("AVANÇAR → GERAR E-BOOK", key="nx50"): st.session_state.etapa = "Gerar_Ebook"; st.rerun()
 
 # ── E-BOOK ───────────────────────────────────────────────────
 elif st.session_state.etapa == "Gerar_Ebook":
     barra_navegacao()
     st.title("📚 GERAR E-BOOK PROFISSIONAL")
-    if st.button("GERAR E-BOOK – 60 CARTÕES"):
+    if st.button("GERAR E-BOOK – 60 CARTÕES", key="nx49"):
         with st.spinner("Gerando e-book com IA..."):
             st.session_state.dados['ebook_cont'] = chamar_ia(prompt_ebook(), system_ebook())
     if 'ebook_cont' in st.session_state.dados:
         bloco_conteudo('ebook_cont', 'E-book', prompt_ebook, system_ebook)
-        if st.button("AVANÇAR →"): st.session_state.etapa = "Gerar_Bonus"; st.rerun()
+        if st.button("AVANÇAR →", key="nx48"): st.session_state.etapa = "Gerar_Bonus"; st.rerun()
 
 # ── BÔNUS ────────────────────────────────────────────────────
 elif st.session_state.etapa == "Gerar_Bonus":
     barra_navegacao()
     st.title("🎁 GERAR 3 E-BOOKS BÔNUS")
     st.caption("Os bônus serão complementares ao ebook principal e incluídos automaticamente na Mensagem de Lançamento.")
-    if st.button("GERAR 3 EBOOKS BÔNUS"):
+    if st.button("GERAR 3 EBOOKS BÔNUS", key="nx47"):
         with st.spinner("Gerando ebooks bônus com IA..."):
             st.session_state.dados['bonus_cont'] = chamar_ia(prompt_bonus(), system_bonus())
             nomes = []
@@ -1190,9 +1190,9 @@ elif st.session_state.etapa == "Gerar_Bonus":
         col_lnk, col_lbtn = st.columns([4,1])
         with col_lnk:
             lnk = st.text_input("Link da Monetizze:", value=st.session_state.dados.get('link_monetizze',''),
-                placeholder="https://go.monetizze.com.br/...", label_visibility="collapsed")
+                placeholder="https://go.monetizze.com.br/...", label_visibility="collapsed", key="nx46")
         with col_lbtn:
-            if st.button("💾 Salvar link", use_container_width=True):
+            if st.button("💾 Salvar link", use_container_width=True, key="nx45"):
                 if lnk.strip():
                     st.session_state.dados['link_monetizze'] = lnk.strip()
                     st.success("Link salvo!")
@@ -1202,7 +1202,7 @@ elif st.session_state.etapa == "Gerar_Bonus":
             st.caption(f"✅ Link salvo: {st.session_state.dados['link_monetizze']}")
 
         st.divider()
-        if st.button("AVANÇAR →"): st.session_state.etapa = "Copy_Face"; st.rerun()
+        if st.button("AVANÇAR →", key="nx44"): st.session_state.etapa = "Copy_Face"; st.rerun()
 
 # ── ANÚNCIO ───────────────────────────────────────────────────
 elif st.session_state.etapa == "Copy_Face":
@@ -1215,7 +1215,7 @@ elif st.session_state.etapa == "Copy_Face":
     col_lp, col_lp_btn = st.columns([4,1])
     with col_lp:
         lp_link = st.text_input("Link da Landing Page:", value=st.session_state.dados.get('link_lp',''),
-            placeholder="https://sualandingpage.com.br", label_visibility="collapsed")
+            placeholder="https://sualandingpage.com.br", label_visibility="collapsed", key="nx43")
     with col_lp_btn:
         if st.button("💾 Salvar", key="salvar_lp_link", use_container_width=True):
             if lp_link.strip():
@@ -1225,7 +1225,7 @@ elif st.session_state.etapa == "Copy_Face":
         st.caption(f"✅ Link salvo: {st.session_state.dados['link_lp']}")
 
     st.divider()
-    if st.button("GERAR ANÚNCIO"):
+    if st.button("GERAR ANÚNCIO", key="nx42"):
         with st.spinner("Gerando anúncio com IA..."):
             st.session_state.dados['fb_copy'] = chamar_ia(prompt_fb(), system_fb())
 
@@ -1299,7 +1299,7 @@ Revise todos os campos → **Publicar** → Facebook revisa em até 24h
 </div>
             """, unsafe_allow_html=True)
 
-        if st.button("AVANÇAR →"): st.session_state.etapa = "Copy_LP"; st.rerun()
+        if st.button("AVANÇAR →", key="nx41"): st.session_state.etapa = "Copy_LP"; st.rerun()
 
 # ── LANDING PAGE ──────────────────────────────────────────────
 elif st.session_state.etapa == "Copy_LP":
@@ -1315,7 +1315,7 @@ elif st.session_state.etapa == "Copy_LP":
     col_gr, col_gr_btn = st.columns([4,1])
     with col_gr:
         grupo_link = st.text_input("Link de convite do grupo:", value=st.session_state.dados.get('link_grupo',''),
-            placeholder="https://chat.whatsapp.com/...", label_visibility="collapsed")
+            placeholder="https://chat.whatsapp.com/...", label_visibility="collapsed", key="nx40")
     with col_gr_btn:
         if st.button("💾 Salvar", key="salvar_grupo_link", use_container_width=True):
             if grupo_link.strip():
@@ -1325,7 +1325,7 @@ elif st.session_state.etapa == "Copy_LP":
         st.caption(f"✅ Link salvo: {st.session_state.dados['link_grupo']}")
 
     st.divider()
-    if st.button("GERAR LANDING PAGE"):
+    if st.button("GERAR LANDING PAGE", key="nx39"):
         with st.spinner("Gerando landing page com IA..."):
             st.session_state.dados['lp_copy'] = chamar_ia(prompt_lp(), system_lp())
 
@@ -1375,7 +1375,7 @@ elif st.session_state.etapa == "Copy_LP":
         <strong>4. Use o link do site</strong> como URL de destino do seu anúncio no Facebook Ads
         </div>""", unsafe_allow_html=True)
 
-        if st.button("AVANÇAR →"): st.session_state.etapa = "Mensagens_Grupo"; st.rerun()
+        if st.button("AVANÇAR →", key="nx38"): st.session_state.etapa = "Mensagens_Grupo"; st.rerun()
 
 # ── MENSAGENS DO GRUPO ────────────────────────────────────────
 elif st.session_state.etapa == "Mensagens_Grupo":
@@ -1414,7 +1414,7 @@ elif st.session_state.etapa == "Mensagens_Grupo":
         st.warning("⚠️ Você não preencheu o WhatsApp de contato no formulário.")
 
     st.markdown('<div class="btn-verde15">', unsafe_allow_html=True)
-    gerar_msg = st.button("💬 GERAR FUNIL COMPLETO DE MENSAGENS")
+    gerar_msg = st.button("💬 GERAR FUNIL COMPLETO DE MENSAGENS", key="nx37")
     st.markdown('</div>', unsafe_allow_html=True)
 
     if gerar_msg:
@@ -1433,10 +1433,11 @@ elif st.session_state.etapa == "Mensagens_Grupo":
         with col_link:
             link_input = st.text_input(
                 "Link:", value=st.session_state.dados.get('link_monetizze', ''),
-                placeholder="https://go.monetizze.com.br/...", label_visibility="collapsed"
-            )
+                placeholder="https://go.monetizze.com.br/...", label_visibility="collapsed",
+                             key="nx36"
+                         )
         with col_btn:
-            if st.button("✅ Aplicar", use_container_width=True):
+            if st.button("✅ Aplicar", use_container_width=True, key="nx35"):
                 if link_input.strip():
                     st.session_state.dados['link_monetizze'] = link_input.strip()
                     st.session_state.dados['msg_grupo'] = st.session_state.dados['msg_grupo'].replace('[LINK MONETIZZE]', link_input.strip())
@@ -1464,6 +1465,7 @@ elif st.session_state.etapa == "Mensagens_Grupo":
             file_name=f"{nome_arquivo}_nexus.json",
             mime="application/json",
             use_container_width=True,
+            key="nx34"
         )
         st.markdown('</div>', unsafe_allow_html=True)
         st.caption("📌 Guarde esse arquivo em um lugar seguro — ele contém todo o seu projeto de lançamento.")
@@ -1522,6 +1524,7 @@ PREÇO: R${d.get('preco',47)}
         file_name=f"{nome_arquivo}_nexus.json",
         mime="application/json",
         use_container_width=True,
+        key="nx33"
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1532,6 +1535,7 @@ PREÇO: R${d.get('preco',47)}
         file_name=f"{nome_arquivo}_lancamento.txt",
         mime="text/plain",
         use_container_width=True,
+        key="nx32"
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1543,7 +1547,7 @@ PREÇO: R${d.get('preco',47)}
             try:
                 dados_importados = json.load(arquivo_json)
                 st.success(f"✅ Arquivo reconhecido: **{dados_importados.get('nome_eb', arquivo_json.name)}**")
-                if st.button("✅ Carregar este projeto"):
+                if st.button("✅ Carregar este projeto", key="nx31"):
                     st.session_state.dados = dados_importados
                     nome_imp = dados_importados.get('nome_eb', arquivo_json.name)
                     salvar_projeto(nome_imp, dados_importados)
@@ -1624,7 +1628,7 @@ PREÇO: R${d.get('preco',47)}
 
             st.session_state.dados['agenda_horas'] = horas_config
 
-            if st.button("📅 EXPORTAR CALENDÁRIO (.ics)", use_container_width=True):
+            if st.button("📅 EXPORTAR CALENDÁRIO (.ics)", use_container_width=True, key="nx30"):
                 eventos = []
                 for item in AGENDA_DEF:
                     chave    = item['chave']
@@ -1646,6 +1650,7 @@ PREÇO: R${d.get('preco',47)}
                     file_name=f"lancamento_{d.get('nome_eb','').replace(' ','_')}.ics",
                     mime="text/calendar",
                     use_container_width=True,
+                    key="nx29"
                 )
                 st.success("Pronto! Importe no Google Calendar, Apple Calendar ou Outlook.")
 
@@ -1782,7 +1787,7 @@ PREÇO: R${d.get('preco',47)}
             st.markdown(f"<div class='chat-bubble'>{r}</div>", unsafe_allow_html=True)
 
     pergunta = st.text_input("Sua pergunta:", key=f"chat_input_{st.session_state.chat_input_key}", label_visibility="collapsed", placeholder="Digite sua pergunta aqui...")
-    if st.button("ENVIAR"):
+    if st.button("ENVIAR", key="nx28"):
         if pergunta.strip():
             with st.spinner("Launcerbot pensando..."):
                 system = (f"Você é o Launcerbot, assistente especialista em lançamentos digitais. "
@@ -1817,30 +1822,30 @@ elif st.session_state.etapa == "Video_Formulario":
     d = st.session_state.dados
 
     st.markdown("#### Dados do produto")
-    d['v_nicho']    = st.text_input("Nicho:", value=d.get('v_nicho',''))
-    d['v_publico']  = st.text_input("Público-alvo:", value=d.get('v_publico',''))
-    d['v_produto']  = st.text_input("Nome do curso/videoaulas:", value=d.get('v_produto',''))
-    d['v_dor']      = st.text_input("Principal dor que resolve:", value=d.get('v_dor',''))
-    d['v_promessa'] = st.text_input("Promessa de transformação:", value=d.get('v_promessa',''))
-    d['v_preco']    = st.number_input("Preço do curso (R$):", min_value=47, max_value=9997, value=int(d.get('v_preco',497)), step=10)
-    d['v_garantia'] = st.selectbox("Garantia:", ["7 dias","14 dias","30 dias"], index=["7 dias","14 dias","30 dias"].index(d.get('v_garantia','7 dias')))
-    d['v_bonus']    = st.text_input("Bônus inclusos (separe por vírgula):", value=d.get('v_bonus',''))
-    d['v_autor']    = st.text_input("Seu nome:", value=d.get('v_autor',''))
-    d['v_cred']     = st.text_area("Sua credencial/experiência:", value=d.get('v_cred',''))
+    d['v_nicho']    = st.text_input("Nicho:", value=d.get('v_nicho',''), key="nx27")
+    d['v_publico']  = st.text_input("Público-alvo:", value=d.get('v_publico',''), key="nx26")
+    d['v_produto']  = st.text_input("Nome do curso/videoaulas:", value=d.get('v_produto',''), key="nx25")
+    d['v_dor']      = st.text_input("Principal dor que resolve:", value=d.get('v_dor',''), key="nx24")
+    d['v_promessa'] = st.text_input("Promessa de transformação:", value=d.get('v_promessa',''), key="nx23")
+    d['v_preco']    = st.number_input("Preço do curso (R$):", min_value=47, max_value=9997, value=int(d.get('v_preco',497)), step=10, key="nx22")
+    d['v_garantia'] = st.selectbox("Garantia:", ["7 dias","14 dias","30 dias"], index=["7 dias","14 dias","30 dias"].index(d.get('v_garantia','7 dias')), key="nx21")
+    d['v_bonus']    = st.text_input("Bônus inclusos (separe por vírgula):", value=d.get('v_bonus',''), key="nx20")
+    d['v_autor']    = st.text_input("Seu nome:", value=d.get('v_autor',''), key="nx19")
+    d['v_cred']     = st.text_area("Sua credencial/experiência:", value=d.get('v_cred',''), key="nx18")
 
     st.divider()
     st.markdown("#### Datas do lançamento")
     col1, col2 = st.columns(2)
     with col1:
-        d['v_data_cpl1'] = st.date_input("CPL 1 — 1º vídeo:", value=d.get('v_data_cpl1', date.today() + timedelta(days=7)))
-        d['v_data_cpl2'] = st.date_input("CPL 2 — 2º vídeo:", value=d.get('v_data_cpl2', date.today() + timedelta(days=11)))
-        d['v_data_cpl3'] = st.date_input("CPL 3 — 3º vídeo:", value=d.get('v_data_cpl3', date.today() + timedelta(days=15)))
+        d['v_data_cpl1'] = st.date_input("CPL 1 — 1º vídeo:", value=d.get('v_data_cpl1', date.today() + timedelta(days=7)), key="nx17")
+        d['v_data_cpl2'] = st.date_input("CPL 2 — 2º vídeo:", value=d.get('v_data_cpl2', date.today() + timedelta(days=11)), key="nx16")
+        d['v_data_cpl3'] = st.date_input("CPL 3 — 3º vídeo:", value=d.get('v_data_cpl3', date.today() + timedelta(days=15)), key="nx15")
     with col2:
-        d['v_data_abertura'] = st.date_input("Abertura do carrinho:", value=d.get('v_data_abertura', date.today() + timedelta(days=18)))
-        d['v_data_fechamento'] = st.date_input("Fechamento do carrinho:", value=d.get('v_data_fechamento', date.today() + timedelta(days=21)))
+        d['v_data_abertura'] = st.date_input("Abertura do carrinho:", value=d.get('v_data_abertura', date.today() + timedelta(days=18)), key="nx14")
+        d['v_data_fechamento'] = st.date_input("Fechamento do carrinho:", value=d.get('v_data_fechamento', date.today() + timedelta(days=21)), key="nx13")
 
     st.divider()
-    if st.button("AVANÇAR → GERAR LANÇAMENTO COMPLETO"):
+    if st.button("AVANÇAR → GERAR LANÇAMENTO COMPLETO", key="nx12"):
         if not d.get('v_nicho') or not d.get('v_produto'):
             st.warning("Preencha pelo menos nicho e nome do produto.")
         else:
@@ -1868,7 +1873,7 @@ elif st.session_state.etapa == "Video_Gerar":
 
     # PRÉ-PRÉ-LANÇAMENTO
     if not d.get('v_pre_pre'):
-        if st.button("🔥 1. GERAR PRÉ-PRÉ-LANÇAMENTO (stories + posts de bastidores)"):
+        if st.button("🔥 1. GERAR PRÉ-PRÉ-LANÇAMENTO (stories + posts de bastidores)", key="nx11"):
             with st.spinner("Gerando conteúdo de antecipação..."):
                 p = (f"Crie o conteúdo de pré-pré-lançamento para o curso '{prod}' sobre {n}.\n"
                      f"Público: {pub}. Dor: {dor}.\n\n"
@@ -1889,7 +1894,7 @@ elif st.session_state.etapa == "Video_Gerar":
 
     # CPL 1
     if d.get('v_pre_pre') and not d.get('v_cpl1'):
-        if st.button(f"🎬 2. GERAR CPL 1 — Oportunidade ({d1})"):
+        if st.button(f"🎬 2. GERAR CPL 1 — Oportunidade ({d1})", key="nx10"):
             with st.spinner("Gerando roteiro CPL 1..."):
                 p = (f"Crie o CPL 1 — OPORTUNIDADE — para o curso '{prod}' sobre {n}.\n"
                      f"Público: {pub}. Dor: {dor}. Promessa: {prom}.\n\n"
@@ -1909,7 +1914,7 @@ elif st.session_state.etapa == "Video_Gerar":
 
     # CPL 2
     if d.get('v_cpl1') and not d.get('v_cpl2'):
-        if st.button(f"🎬 3. GERAR CPL 2 — Transformação ({d2})"):
+        if st.button(f"🎬 3. GERAR CPL 2 — Transformação ({d2})", key="nx9"):
             with st.spinner("Gerando roteiro CPL 2..."):
                 p = (f"Crie o CPL 2 — TRANSFORMAÇÃO — para '{prod}' sobre {n}.\n"
                      f"Público: {pub}. Credencial: {cred}.\n\n"
@@ -1928,7 +1933,7 @@ elif st.session_state.etapa == "Video_Gerar":
 
     # CPL 3
     if d.get('v_cpl2') and not d.get('v_cpl3'):
-        if st.button(f"🎬 4. GERAR CPL 3 — Quebra de objeções ({d3})"):
+        if st.button(f"🎬 4. GERAR CPL 3 — Quebra de objeções ({d3})", key="nx8"):
             with st.spinner("Gerando roteiro CPL 3..."):
                 p = (f"Crie o CPL 3 — QUEBRA DE OBJEÇÕES — para '{prod}' sobre {n}.\n"
                      f"Preço: R${preco}. Data abertura: {da}.\n\n"
@@ -1947,7 +1952,7 @@ elif st.session_state.etapa == "Video_Gerar":
 
     # ABERTURA DE CARRINHO
     if d.get('v_cpl3') and not d.get('v_abertura'):
-        if st.button(f"🛒 5. GERAR ABERTURA DE CARRINHO ({da})"):
+        if st.button(f"🛒 5. GERAR ABERTURA DE CARRINHO ({da})", key="nx7"):
             with st.spinner("Gerando copy de abertura..."):
                 bonus_lista = '\n'.join([f'🎁 {b.strip()}' for b in bonus.split(',') if b.strip()]) if bonus else '🎁 Bônus exclusivos'
                 p = (f"Crie a copy completa de ABERTURA DE CARRINHO para '{prod}' sobre {n}.\n"
@@ -1967,7 +1972,7 @@ elif st.session_state.etapa == "Video_Gerar":
 
     # FECHAMENTO
     if d.get('v_abertura') and not d.get('v_fechamento'):
-        if st.button(f"⏰ 6. GERAR FECHAMENTO — Urgência máxima ({df})"):
+        if st.button(f"⏰ 6. GERAR FECHAMENTO — Urgência máxima ({df})", key="nx6"):
             with st.spinner("Gerando copy de fechamento..."):
                 p = (f"Crie a copy de FECHAMENTO DE CARRINHO para '{prod}' sobre {n}.\n"
                      f"Carrinho fecha em {df}. Preço: R${preco}. Garantia: {garantia}.\n\n"
@@ -2004,12 +2009,12 @@ FECHAMENTO\n{'-'*40}\n{limpar_html(d.get('v_fechamento',''))}"""
         with col_txt_v:
             st.markdown('<div class="btn-verde">', unsafe_allow_html=True)
             st.download_button("⬇️ BAIXAR COMPLETO (.txt)", data=texto_v,
-                file_name=f"{nome_v}_lancamento_video.txt", mime="text/plain", use_container_width=True)
+                file_name=f"{nome_v}_lancamento_video.txt", mime="text/plain", use_container_width=True, key="nx5")
             st.markdown('</div>', unsafe_allow_html=True)
         with col_json_v:
             st.markdown('<div class="btn-verde">', unsafe_allow_html=True)
             st.download_button("💾 SALVAR NO COMPUTADOR (.json)", data=gerar_json_projeto(d),
-                file_name=f"{nome_v}_nexus.json", mime="application/json", use_container_width=True)
+                file_name=f"{nome_v}_nexus.json", mime="application/json", use_container_width=True, key="nx4")
             st.markdown('</div>', unsafe_allow_html=True)
 
         # Agendador CPL
@@ -2040,7 +2045,7 @@ FECHAMENTO\n{'-'*40}\n{limpar_html(d.get('v_fechamento',''))}"""
                         key=f"hcpl_{item['chave']}", label_visibility="collapsed")
             d['agenda_horas_cpl'] = horas_cpl
 
-            if st.button("📅 EXPORTAR CALENDÁRIO CPL (.ics)", use_container_width=True):
+            if st.button("📅 EXPORTAR CALENDÁRIO CPL (.ics)", use_container_width=True, key="nx3"):
                 eventos_cpl = []
                 for item in CPL_AGENDA:
                     data_base = d.get(item.get("data_key", ""), date.today())
@@ -2051,10 +2056,10 @@ FECHAMENTO\n{'-'*40}\n{limpar_html(d.get('v_fechamento',''))}"""
                         "data": data_ev, "hora": horas_cpl.get(item["chave"], item.get("hora", "")), "descricao": texto})
                 ics = gerar_ics(eventos_cpl)
                 st.download_button("⬇️ Baixar .ics", data=ics.encode('utf-8'),
-                    file_name=f"{nome_v}_cpl.ics", mime="text/calendar", use_container_width=True)
+                    file_name=f"{nome_v}_cpl.ics", mime="text/calendar", use_container_width=True, key="nx2")
                 st.success("Importe no Google Calendar, Apple Calendar ou Outlook.")
 
-        if st.button("🔙 Voltar à escolha de lançamento"):
+        if st.button("🔙 Voltar à escolha de lançamento", key="nx1"):
             st.session_state.etapa = "Escolha_Tipo"; st.rerun()
 
 
