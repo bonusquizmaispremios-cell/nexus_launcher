@@ -1016,22 +1016,48 @@ elif st.session_state.etapa == "Formulario":
                     f"Responda EXATAMENTE neste formato:\nNICHO: ...\nPUBLICO: ...\nNOME_EB: ...\nDOR: ...\nATUAL: ...\nDESEJADA: ...\nPROMESSA: ...\nDIFERENCIAL: ...",
                     "Você é especialista em marketing digital e lançamentos. Seja direto e prático."
                 )
+                # Parse robusto — aceita maiúscula, minúscula, com ** e sem
                 mapa = {}
                 for linha in resultado_ia.strip().split('\n'):
-                    if ':' in linha:
-                        chave, _, valor = linha.partition(':')
-                        mapa[chave.strip()] = valor.strip()
-                if mapa:
-                    st.session_state.dados.update({
-                        'nicho': mapa.get('NICHO',''), 'publico': mapa.get('PUBLICO',''),
-                        'nome_eb': mapa.get('NOME_EB',''), 'dor': mapa.get('DOR',''),
-                        'atual': mapa.get('ATUAL',''), 'desejada': mapa.get('DESEJADA',''),
-                        'promessa': mapa.get('PROMESSA',''), 'diferencial': mapa.get('DIFERENCIAL',''),
-                    })
-                    # Apagar keys dos widgets para que value= seja respeitado no próximo render
+                    linha_limpa = linha.strip().lstrip('*').strip()
+                    if ':' in linha_limpa:
+                        chave, _, valor = linha_limpa.partition(':')
+                        chave_norm = chave.strip().upper().replace(' ','_').replace('-','_')
+                        valor_limpo = valor.strip().lstrip('*').strip()
+                        if valor_limpo:
+                            mapa[chave_norm] = valor_limpo
+
+                # Mapeamento flexível de chaves
+                _mapa_campos = {
+                    'nicho':       ['NICHO','NICHO_DO_EBOOK','NICHE','TEMA','ASSUNTO'],
+                    'publico':     ['PUBLICO','PÚBLICO','PUBLICO_ALVO','PÚBLICO_ALVO','AUDIENCIA'],
+                    'nome_eb':     ['NOME_EB','NOME','TITULO','TÍTULO','NAME'],
+                    'dor':         ['DOR','PROBLEMA','PAIN','DOR_PRINCIPAL'],
+                    'atual':       ['ATUAL','SITUACAO_ATUAL','SITUAÇÃO_ATUAL','SITUACAO'],
+                    'desejada':    ['DESEJADA','SITUACAO_DESEJADA','SITUAÇÃO_DESEJADA','TRANSFORMACAO'],
+                    'promessa':    ['PROMESSA','PROMISE','TRANSFORMAÇÃO','TRANSFORMACAO'],
+                    'diferencial': ['DIFERENCIAL','DIFERENCIAL_COMPETITIVO','UNIQUE','USP'],
+                }
+
+                dados_novos = {}
+                for campo, chaves_possiveis in _mapa_campos.items():
+                    for chave in chaves_possiveis:
+                        if chave in mapa and mapa[chave]:
+                            dados_novos[campo] = mapa[chave]
+                            break
+
+                if dados_novos:
+                    st.session_state.dados.update(dados_novos)
+                    # Deletar keys dos widgets para forçar value= no próximo render
                     for _k_del in ['nx68','nx67','nx66','nx65','nx64','nx63','nx62','nx61']:
-                        if _k_del in st.session_state: del st.session_state[_k_del]
+                        if _k_del in st.session_state:
+                            del st.session_state[_k_del]
+                    st.success(f"✅ IA preencheu {len(dados_novos)} campos!")
                     st.rerun()
+                else:
+                    # Debug: mostrar o que a IA retornou
+                    st.warning("⚠️ A IA retornou mas não consegui extrair os campos. Resposta da IA:")
+                    st.code(resultado_ia[:500])
         else: st.warning("Digite o assunto do ebook antes de continuar.")
 
     st.divider()
