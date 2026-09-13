@@ -1022,9 +1022,15 @@ elif st.session_state.etapa == "Formulario":
                         chave, _, valor = linha.partition(':')
                         mapa[chave.strip()] = valor.strip()
                 if mapa:
-                    st.session_state.dados.update({'nicho': mapa.get('NICHO',''), 'publico': mapa.get('PUBLICO',''),
-                        'nome_eb': mapa.get('NOME_EB',''), 'dor': mapa.get('DOR',''), 'atual': mapa.get('ATUAL',''),
-                        'desejada': mapa.get('DESEJADA',''), 'promessa': mapa.get('PROMESSA',''), 'diferencial': mapa.get('DIFERENCIAL','')})
+                    st.session_state.dados.update({
+                        'nicho': mapa.get('NICHO',''), 'publico': mapa.get('PUBLICO',''),
+                        'nome_eb': mapa.get('NOME_EB',''), 'dor': mapa.get('DOR',''),
+                        'atual': mapa.get('ATUAL',''), 'desejada': mapa.get('DESEJADA',''),
+                        'promessa': mapa.get('PROMESSA',''), 'diferencial': mapa.get('DIFERENCIAL',''),
+                    })
+                    # Apagar keys dos widgets para que value= seja respeitado no próximo render
+                    for _k_del in ['nx68','nx67','nx66','nx65','nx64','nx63','nx62','nx61']:
+                        if _k_del in st.session_state: del st.session_state[_k_del]
                     st.rerun()
         else: st.warning("Digite o assunto do ebook antes de continuar.")
 
