@@ -511,10 +511,17 @@ def mostrar_progresso():
 
 def barra_navegacao():
     mostrar_progresso()
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns([2,2,2])
     with col1:
         if st.button("➕ INICIAR NOVO PROJETO", key="nx76"):
             st.session_state.dados = {}; st.session_state.chat_hist = []; st.session_state.etapa = "Formulario"; st.rerun()
+    with col3:
+        if st.session_state.dados and st.session_state.dados.get('nome_eb'):
+            _nome_arq = st.session_state.dados.get('nome_eb','projeto').replace(' ','_').lower()
+            st.download_button("💾 Salvar projeto", 
+                data=json.dumps(st.session_state.dados, ensure_ascii=False, indent=2, default=str),
+                file_name=f"{_nome_arq}_nexus.json", mime="application/json",
+                key="nx_dl_barra", use_container_width=True)
     with col2:
         with st.expander("📂 MEUS PROJETOS"):
             # ── PROJETOS SALVOS NA SESSÃO ─────────────────────
@@ -923,6 +930,25 @@ if st.session_state.etapa == "Login":
             ⚪ <strong>Groq API:</strong> aguardando chave
             </div>""", unsafe_allow_html=True)
 
+    st.markdown("---")
+    st.markdown("**📂 Já tem um projeto salvo?** Carregue o arquivo .json para continuar de onde parou:")
+    _arq_proj_login = st.file_uploader("Carregar projeto (.json):", type=["json"], key="nx_upload_proj", label_visibility="collapsed")
+    if _arq_proj_login:
+        try:
+            import json as _jnx
+            _proj_dados = _jnx.loads(_arq_proj_login.read().decode())
+            _bloq_nx = {'api_key','etapa'}
+            _pref_nx = ('nx','ul_','dl_','btn_')
+            import re as _rnx
+            for _k, _v in _proj_dados.items():
+                if _k in _bloq_nx: continue
+                if any(_k.startswith(_p) for _p in _pref_nx): continue
+                if _rnx.match(r'.+_?\d+$', _k): continue
+                st.session_state[_k] = _v
+            st.success("✅ Projeto carregado! Faça login para continuar.")
+        except: st.error("Arquivo inválido.")
+    st.markdown("")
+
     if st.button("ENTRAR", key="nx73"):
         if not st.session_state.usuario.strip(): st.error("Informe seu nome.")
         elif not st.session_state.api_key.strip(): st.error("Informe sua chave de API.")
@@ -1059,7 +1085,7 @@ elif st.session_state.etapa == "Formulario":
         📣 <strong>1 Anúncio</strong> alinhado com a landing page<br>
         🌐 <strong>1 Landing Page</strong> alinhada com o anúncio<br>
         💬 <strong>Funil completo de Mensagens</strong> — boas-vindas + aquecimento + véspera + venda<br>
-        🚀 <strong>Lançamento:</strong> {d['data_lancto'].strftime('%d/%m/%Y')}
+        🚀 <strong>Lançamento:</strong> {d['data_lancto'].strftime('%d/%m/%Y') if hasattr(d.get('data_lancto'), 'strftime') else str(d.get('data_lancto', 'a definir'))}
         </div>""", unsafe_allow_html=True)
 
     if st.button("AVANÇAR →", key="nx52"):
