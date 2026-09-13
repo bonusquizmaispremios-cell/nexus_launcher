@@ -1011,54 +1011,45 @@ elif st.session_state.etapa == "Formulario":
     if st.button("✨ PREENCHER COM IA", key="nx69"):
         if nicho_rapido.strip():
             with st.spinner("IA preenchendo o formulário..."):
-                resultado_ia = chamar_ia(
-                    f"Preencha os campos para um ebook digital sobre '{nicho_rapido}'. "
-                    f"Responda EXATAMENTE neste formato:\nNICHO: ...\nPUBLICO: ...\nNOME_EB: ...\nDOR: ...\nATUAL: ...\nDESEJADA: ...\nPROMESSA: ...\nDIFERENCIAL: ...",
-                    "Você é especialista em marketing digital e lançamentos. Seja direto e prático."
-                )
-                # Parse robusto — aceita maiúscula, minúscula, com ** e sem
-                mapa = {}
-                for linha in resultado_ia.strip().split('\n'):
-                    linha_limpa = linha.strip().lstrip('*').strip()
-                    if ':' in linha_limpa:
-                        chave, _, valor = linha_limpa.partition(':')
-                        chave_norm = chave.strip().upper().replace(' ','_').replace('-','_')
-                        valor_limpo = valor.strip().lstrip('*').strip()
-                        if valor_limpo:
-                            mapa[chave_norm] = valor_limpo
+                import json as _json_nx
+                _prompt_nx = f"""Você é especialista em marketing digital. Crie dados para um ebook sobre: {nicho_rapido}
 
-                # Mapeamento flexível de chaves
-                _mapa_campos = {
-                    'nicho':       ['NICHO','NICHO_DO_EBOOK','NICHE','TEMA','ASSUNTO'],
-                    'publico':     ['PUBLICO','PÚBLICO','PUBLICO_ALVO','PÚBLICO_ALVO','AUDIENCIA'],
-                    'nome_eb':     ['NOME_EB','NOME','TITULO','TÍTULO','NAME'],
-                    'dor':         ['DOR','PROBLEMA','PAIN','DOR_PRINCIPAL'],
-                    'atual':       ['ATUAL','SITUACAO_ATUAL','SITUAÇÃO_ATUAL','SITUACAO'],
-                    'desejada':    ['DESEJADA','SITUACAO_DESEJADA','SITUAÇÃO_DESEJADA','TRANSFORMACAO'],
-                    'promessa':    ['PROMESSA','PROMISE','TRANSFORMAÇÃO','TRANSFORMACAO'],
-                    'diferencial': ['DIFERENCIAL','DIFERENCIAL_COMPETITIVO','UNIQUE','USP'],
-                }
+Responda APENAS com este JSON, sem texto antes ou depois:
+{{
+  "nicho": "nome do nicho em 2-4 palavras",
+  "publico": "descrição do público-alvo em 1 frase",
+  "nome_eb": "título atrativo do ebook",
+  "dor": "principal problema que o ebook resolve em 1 frase",
+  "atual": "situação atual do público antes do ebook em 1-2 frases",
+  "desejada": "situação desejada após o ebook em 1-2 frases",
+  "promessa": "promessa de transformação em 1 frase curta",
+  "diferencial": "diferencial do ebook em 1 frase"
+}}"""
+                _raw = chamar_ia(_prompt_nx, "Responda APENAS com JSON válido. Sem texto extra.")
+                # Extrair JSON da resposta
+                _dados_ia = {}
+                try:
+                    # Tentar parse direto
+                    _s = _raw.find('{')
+                    _e = _raw.rfind('}')
+                    if _s >= 0 and _e > _s:
+                        _dados_ia = _json_nx.loads(_raw[_s:_e+1])
+                except:
+                    pass
 
-                dados_novos = {}
-                for campo, chaves_possiveis in _mapa_campos.items():
-                    for chave in chaves_possiveis:
-                        if chave in mapa and mapa[chave]:
-                            dados_novos[campo] = mapa[chave]
-                            break
-
-                if dados_novos:
-                    st.session_state.dados.update(dados_novos)
+                if _dados_ia:
+                    _campos_validos = {k: str(v) for k, v in _dados_ia.items()
+                                      if k in ['nicho','publico','nome_eb','dor','atual','desejada','promessa','diferencial'] and v}
+                    st.session_state.dados.update(_campos_validos)
                     # Deletar keys dos widgets para forçar value= no próximo render
                     for _k_del in ['nx68','nx67','nx66','nx65','nx64','nx63','nx62','nx61']:
                         if _k_del in st.session_state:
                             del st.session_state[_k_del]
-                    st.success(f"✅ IA preencheu {len(dados_novos)} campos!")
                     st.rerun()
                 else:
-                    # Debug: mostrar o que a IA retornou
-                    st.warning("⚠️ A IA retornou mas não consegui extrair os campos. Resposta da IA:")
-                    st.code(resultado_ia[:500])
-        else: st.warning("Digite o assunto do ebook antes de continuar.")
+                    st.error("⚠️ Erro ao processar resposta da IA. Tente novamente.")
+        else:
+            st.warning("Digite o assunto do ebook antes de continuar.")
 
     st.divider()
     st.markdown("#### Revise ou preencha manualmente")
