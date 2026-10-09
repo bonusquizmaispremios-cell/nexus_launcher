@@ -7,6 +7,18 @@ import re
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="NEXUS LAUNCHER", layout="wide")
 
+st.markdown("""
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+[data-testid="stToolbar"] {visibility: hidden;}
+[data-testid="stDecoration"] {visibility: hidden;}
+[data-testid="stStatusWidget"] {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
+
+
 # --- ESTILO CSS ---
 st.markdown("""
     <style>
@@ -868,8 +880,8 @@ def system_msg():
 if st.session_state.etapa == "Login":
     st.info("💻 **Dica:** Pela complexidade dos agentes, no computador a experiência é mais agradável.")
     st.title("NEXUS LAUNCHER")
-    st.subheader("ACESSO RESTRITO A ASSOCIADOS DO QUIZ COM PRÊMIOS")
-    st.markdown('<p style="margin-top:-8px;margin-bottom:20px;font-size:0.95em;">🔗 <a href="https://quizcompremios.com.br" target="_blank" style="color:#0369A1;text-decoration:none;font-weight:600;">quizcompremios.com.br</a></p>', unsafe_allow_html=True)
+    st.subheader("ACESSO RESTRITO A ASSOCIADOS DO MEUSAGENTESIA.COM.BR")
+    st.markdown('<p style="margin-top:-8px;margin-bottom:20px;font-size:0.95em;">🔗 <a href="https://meusagentesia.com.br" target="_blank" style="color:#0369A1;text-decoration:none;font-weight:600;">meusagentesia.com.br</a></p>', unsafe_allow_html=True)
     st.session_state.usuario = st.text_input("Nome", key="nx75")
     st.session_state.api_key = st.text_input("Chave Groq", type="password", key="nx74")
     with st.expander("🚀 Primeira vez aqui? Veja como funciona em 3 passos"):
